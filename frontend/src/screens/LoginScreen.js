@@ -16,6 +16,7 @@ import { useAuth } from '../AuthContext';
 import { showAlert } from '../utils';
 import { colors, gradients, shadow } from '../theme';
 import { FadeInView, GradientButton } from '../components';
+import Mascot from '../Mascot';
 
 export default function LoginScreen({ navigation }) {
   const { setToken } = useAuth();
@@ -48,24 +49,26 @@ export default function LoginScreen({ navigation }) {
   };
 
   return (
-    <LinearGradient colors={gradients.hero} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={styles.flex}>
-      {/* decorative blobs */}
-      <View style={[styles.blob, styles.blobTop]} />
-      <View style={[styles.blob, styles.blobBottom]} />
+    <View style={styles.page}>
+      {/* blue header band */}
+      <LinearGradient colors={gradients.hero} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={styles.band}>
+        <View style={[styles.ring, styles.ringRight]} />
+        <View style={[styles.ring, styles.ringLeft]} />
+      </LinearGradient>
 
       <KeyboardAvoidingView style={styles.flex} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
         <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
           <FadeInView style={styles.inner}>
             <View style={styles.logoWrap}>
               <View style={styles.logo}>
-                <Ionicons name="people" size={38} color={colors.primary} />
+                <Mascot size={88} />
               </View>
               <Text style={styles.brand}>HR Manager</Text>
               <Text style={styles.tagline}>Salary Analytics System</Text>
             </View>
 
             <View style={[styles.card, shadow.strong]}>
-              <Text style={styles.welcome}>Welcome back 👋</Text>
+              <Text style={styles.welcome}>Welcome back</Text>
               <Text style={styles.welcomeSub}>Sign in to manage your team</Text>
 
               <Text style={styles.label}>Username</Text>
@@ -122,48 +125,61 @@ export default function LoginScreen({ navigation }) {
           </FadeInView>
         </ScrollView>
       </KeyboardAvoidingView>
-    </LinearGradient>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  page: { flex: 1, backgroundColor: colors.background },
   flex: { flex: 1 },
   container: { flexGrow: 1, justifyContent: 'center', padding: 20 },
-  inner: { width: '100%', maxWidth: 440, alignSelf: 'center' },
-  blob: { position: 'absolute', borderRadius: 999, backgroundColor: 'rgba(255,255,255,0.12)' },
-  blobTop: { width: 260, height: 260, top: -80, right: -70 },
-  blobBottom: { width: 320, height: 320, bottom: -120, left: -110 },
+  inner: { width: '100%', maxWidth: 420, alignSelf: 'center' },
+  band: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: '48%',
+    borderBottomLeftRadius: 36,
+    borderBottomRightRadius: 36,
+    overflow: 'hidden',
+  },
+  ring: { position: 'absolute', borderRadius: 999, borderWidth: 28, borderColor: 'rgba(255,255,255,0.06)' },
+  ringRight: { width: 280, height: 280, top: -110, right: -90 },
+  ringLeft: { width: 200, height: 200, bottom: -90, left: -60 },
 
-  logoWrap: { alignItems: 'center', marginBottom: 24 },
+  logoWrap: { alignItems: 'center', marginBottom: 22 },
   logo: {
-    width: 76,
-    height: 76,
-    borderRadius: 24,
+    width: 104,
+    height: 104,
+    borderRadius: 30,
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 14,
-    boxShadow: '0px 8px 24px rgba(0,0,0,0.20)',
+    borderWidth: 4,
+    borderColor: 'rgba(255,255,255,0.9)',
+    boxShadow: '0px 10px 26px rgba(15,30,61,0.25)',
   },
-  brand: { fontSize: 30, fontWeight: '800', color: '#fff', letterSpacing: 0.5 },
-  tagline: { fontSize: 15, color: 'rgba(255,255,255,0.85)', marginTop: 2 },
+  brand: { fontSize: 28, fontWeight: '700', color: '#fff', letterSpacing: 0.3 },
+  tagline: { fontSize: 14, color: 'rgba(255,255,255,0.85)', marginTop: 2, letterSpacing: 0.4 },
 
-  card: { backgroundColor: colors.card, borderRadius: 24, padding: 24 },
-  welcome: { fontSize: 22, fontWeight: '800', color: colors.text },
+  card: { backgroundColor: colors.card, borderRadius: 20, padding: 24, borderWidth: 1, borderColor: colors.border },
+  welcome: { fontSize: 21, fontWeight: '700', color: colors.text },
   welcomeSub: { fontSize: 14, color: colors.muted, marginTop: 4, marginBottom: 20 },
-  label: { fontSize: 13, fontWeight: '700', color: colors.text, marginBottom: 6 },
+  label: { fontSize: 13, fontWeight: '600', color: colors.text, marginBottom: 6 },
   inputRow: {
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: 1.5,
     borderColor: colors.border,
     backgroundColor: colors.inputBg,
-    borderRadius: 12,
+    borderRadius: 10,
     paddingHorizontal: 12,
     marginBottom: 16,
   },
   inputFocused: { borderColor: colors.primary, backgroundColor: '#fff' },
   input: { flex: 1, paddingVertical: 12, paddingHorizontal: 10, fontSize: 16, color: colors.text },
   loginButton: { marginTop: 8 },
-  footer: { textAlign: 'center', color: 'rgba(255,255,255,0.75)', marginTop: 24, fontSize: 13 },
+  footer: { textAlign: 'center', color: colors.muted, marginTop: 24, fontSize: 13 },
 });

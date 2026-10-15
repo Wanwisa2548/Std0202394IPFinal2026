@@ -1,46 +1,45 @@
+// Clean, formal blue & white theme.
 export const colors = {
-  background: '#F4F3FF',
+  background: '#F4F7FC',
   card: '#FFFFFF',
-  border: '#E6E4F5',
-  inputBg: '#F8F7FF',
-  text: '#1E1B4B',
-  muted: '#6B6893',
-  primary: '#6D28D9',
-  primaryLight: '#EDE9FE',
+  border: '#DCE4F2',
+  inputBg: '#F7F9FD',
+  text: '#0F1E3D',
+  muted: '#5B6B86',
+  primary: '#1D4ED8',
+  primaryLight: '#E8F0FE',
   success: '#059669',
   successBg: '#D1FAE5',
-  warning: '#D97706',
+  warning: '#B45309',
   warningBg: '#FEF3C7',
-  danger: '#E11D48',
-  dangerBg: '#FFE4E6',
+  danger: '#DC2626',
+  dangerBg: '#FDECEC',
 };
 
 export const gradients = {
-  hero: ['#4F46E5', '#7C3AED', '#C026D3'],
-  primary: ['#6D28D9', '#4F46E5'],
-  analyze: ['#DB2777', '#9333EA'],
-  danger: ['#F43F5E', '#E11D48'],
+  hero: ['#1E3A8A', '#1D4ED8', '#2563EB'],
+  primary: ['#2563EB', '#1D4ED8'],
+  analyze: ['#1E40AF', '#2563EB'],
+  danger: ['#EF4444', '#DC2626'],
 };
 
-// One look per salary tier (low -> high). Extra tiers reuse the last style.
+// One look per salary tier (low -> high), light blue to navy.
 export const tierStyles = [
-  { colors: ['#10B981', '#0D9488'], icon: 'leaf', label: 'Entry level' },
-  { colors: ['#3B82F6', '#6366F1'], icon: 'trending-up', label: 'Mid level' },
-  { colors: ['#F59E0B', '#EF4444'], icon: 'trophy', label: 'Top level' },
+  { colors: ['#60A5FA', '#3B82F6'], icon: 'person', label: 'Entry level' },
+  { colors: ['#2563EB', '#1D4ED8'], icon: 'people', label: 'Mid level' },
+  { colors: ['#1E40AF', '#172554'], icon: 'ribbon', label: 'Senior level' },
 ];
 
 export const avatarPalette = [
-  ['#F472B6', '#DB2777'],
-  ['#818CF8', '#4F46E5'],
-  ['#34D399', '#059669'],
-  ['#FBBF24', '#D97706'],
   ['#60A5FA', '#2563EB'],
-  ['#A78BFA', '#7C3AED'],
-  ['#F87171', '#DC2626'],
-  ['#2DD4BF', '#0D9488'],
+  ['#38BDF8', '#0284C7'],
+  ['#818CF8', '#4F46E5'],
+  ['#3B82F6', '#1E40AF'],
+  ['#22D3EE', '#0891B2'],
+  ['#93C5FD', '#3B82F6'],
 ];
 
 export const shadow = {
-  card: { boxShadow: '0px 6px 18px rgba(76, 29, 149, 0.10)' },
-  strong: { boxShadow: '0px 10px 28px rgba(76, 29, 149, 0.22)' },
+  card: { boxShadow: '0px 4px 14px rgba(15, 30, 61, 0.08)' },
+  strong: { boxShadow: '0px 10px 30px rgba(15, 30, 61, 0.16)' },
 };

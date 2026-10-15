@@ -25,6 +25,7 @@ import { useAuth } from '../AuthContext';
 import { confirmDelete, formatMoney, parseSalary, showAlert } from '../utils';
 import { colors, gradients, shadow, tierStyles } from '../theme';
 import { Avatar, FadeInView, GradientButton } from '../components';
+import Mascot from '../Mascot';
 
 const FILTERS = ['All', 'Active', 'On Leave'];
 
@@ -268,9 +269,14 @@ export default function DashboardScreen({ navigation }) {
       >
         <View style={[styles.blob, styles.blobHero]} />
         <View style={styles.heroTop}>
-          <View style={styles.flexShrink}>
-            <Text style={styles.heroHello}>Hello, Admin 👋</Text>
-            <Text style={styles.heroTitle}>HR Dashboard</Text>
+          <View style={styles.heroIdentity}>
+            <View style={styles.heroMascot}>
+              <Mascot size={46} />
+            </View>
+            <View style={styles.flexShrink}>
+              <Text style={styles.heroHello}>Hello, Admin</Text>
+              <Text style={styles.heroTitle}>HR Dashboard</Text>
+            </View>
           </View>
           <Pressable
             onPress={handleLogout}
@@ -507,8 +513,18 @@ const styles = StyleSheet.create({
   blob: { position: 'absolute', borderRadius: 999, backgroundColor: 'rgba(255,255,255,0.10)' },
   blobHero: { width: 220, height: 220, top: -70, right: -60 },
   heroTop: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 18 },
+  heroIdentity: { flexDirection: 'row', alignItems: 'center', flexShrink: 1, marginRight: 10 },
+  heroMascot: {
+    width: 52,
+    height: 52,
+    borderRadius: 16,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 12,
+  },
   heroHello: { color: 'rgba(255,255,255,0.85)', fontSize: 14 },
-  heroTitle: { color: '#fff', fontSize: 26, fontWeight: '800', marginTop: 2 },
+  heroTitle: { color: '#fff', fontSize: 26, fontWeight: '700', marginTop: 2 },
   logoutButton: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -529,7 +545,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'rgba(255,255,255,0.22)',
   },
-  statValue: { color: '#fff', fontSize: 22, fontWeight: '800', marginTop: 6 },
+  statValue: { color: '#fff', fontSize: 22, fontWeight: '700', marginTop: 6 },
   statLabel: { color: 'rgba(255,255,255,0.85)', fontSize: 12, marginTop: 2 },
 
   // Sections
@@ -544,7 +560,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginRight: 10,
   },
-  sectionTitle: { fontSize: 18, fontWeight: '800', color: colors.text },
+  sectionTitle: { fontSize: 18, fontWeight: '700', color: colors.text },
   sectionSub: { fontSize: 12, color: colors.muted, marginTop: 1 },
   inputRow: {
     flexDirection: 'row',
@@ -575,13 +591,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginRight: 10,
   },
-  tierName: { color: '#fff', fontSize: 18, fontWeight: '800' },
+  tierName: { color: '#fff', fontSize: 18, fontWeight: '700' },
   tierLabel: { color: 'rgba(255,255,255,0.85)', fontSize: 12 },
   tierCount: { marginLeft: 'auto', alignItems: 'flex-end' },
-  tierCountValue: { color: '#fff', fontSize: 24, fontWeight: '800' },
+  tierCountValue: { color: '#fff', fontSize: 24, fontWeight: '700' },
   tierCountLabel: { color: 'rgba(255,255,255,0.85)', fontSize: 11 },
   tierAvgLabel: { color: 'rgba(255,255,255,0.85)', fontSize: 12, marginTop: 14 },
-  tierAvg: { color: '#fff', fontSize: 26, fontWeight: '800' },
+  tierAvg: { color: '#fff', fontSize: 26, fontWeight: '700' },
   barTrack: {
     height: 8,
     borderRadius: 4,
@@ -594,7 +610,7 @@ const styles = StyleSheet.create({
 
   // List header
   listHeader: { flexDirection: 'row', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: 10 },
-  listTitle: { fontSize: 20, fontWeight: '800', color: colors.text },
+  listTitle: { fontSize: 20, fontWeight: '700', color: colors.text },
   listCount: { fontSize: 13, color: colors.muted, fontWeight: '600' },
   searchRow: {
     flexDirection: 'row',
@@ -626,15 +642,15 @@ const styles = StyleSheet.create({
     padding: 14,
     marginBottom: 12,
     marginHorizontal: 16,
-    borderLeftWidth: 5,
+    borderLeftWidth: 4,
   },
   empRow: { flexDirection: 'row', alignItems: 'center' },
   empInfo: { flex: 1, marginLeft: 12, marginRight: 8 },
-  empName: { fontSize: 16, fontWeight: '800', color: colors.text },
+  empName: { fontSize: 16, fontWeight: '700', color: colors.text },
   empPosition: { fontSize: 13, color: colors.muted, marginLeft: 4, flexShrink: 1 },
   badge: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 10, paddingVertical: 5, borderRadius: 999 },
   badgeDot: { width: 7, height: 7, borderRadius: 4, marginRight: 6 },
-  badgeText: { fontSize: 12, fontWeight: '800' },
+  badgeText: { fontSize: 12, fontWeight: '700' },
   salaryRow: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -645,7 +661,7 @@ const styles = StyleSheet.create({
     marginTop: 12,
   },
   salaryLabel: { color: colors.muted, fontSize: 13, marginLeft: 8 },
-  salaryValue: { marginLeft: 'auto', fontSize: 17, fontWeight: '800', color: colors.primary },
+  salaryValue: { marginLeft: 'auto', fontSize: 17, fontWeight: '700', color: colors.primary },
   actions: { flexDirection: 'row', marginTop: 12 },
   actionButton: {
     flex: 1,

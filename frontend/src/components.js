@@ -50,7 +50,7 @@ export function Avatar({ name, size = 44 }) {
       colors={pair}
       style={{ width: size, height: size, borderRadius: size / 2, alignItems: 'center', justifyContent: 'center' }}
     >
-      <Text style={{ color: '#fff', fontWeight: '800', fontSize: size * 0.38 }}>{initials}</Text>
+      <Text style={{ color: '#fff', fontWeight: '700', fontSize: size * 0.38 }}>{initials}</Text>
     </LinearGradient>
   );
 }
@@ -71,7 +71,7 @@ export function FadeInView({ delay = 0, children, style }) {
 }
 
 const styles = StyleSheet.create({
-  buttonWrap: { borderRadius: 12, overflow: 'hidden' },
+  buttonWrap: { borderRadius: 10, overflow: 'hidden' },
   button: { paddingVertical: 14, alignItems: 'center', justifyContent: 'center', minHeight: 48 },
   buttonContent: { flexDirection: 'row', alignItems: 'center' },
   buttonIcon: { marginRight: 8 },
