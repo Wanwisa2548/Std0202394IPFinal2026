@@ -1,5 +1,13 @@
+// Load backend/.env if present (Node >= 20.12 built-in; no dotenv needed).
+try {
+  process.loadEnvFile();
+} catch {
+  // no .env file -> rely on real environment variables (or in-memory fallback)
+}
+
 const express = require('express');
 const cors = require('cors');
+const { initRepository } = require('./repository');
 
 const app = express();
 const PORT = 3000;
@@ -8,25 +16,12 @@ const HOST = '0.0.0.0';
 app.use(cors());
 app.use(express.json());
 
-// ---------------------------------------------------------------------------
-// In-memory data store (no database)
-// ---------------------------------------------------------------------------
-let employees = [
-  { id: '1', name: 'John Doe', position: 'Software Engineer', status: 'Active', salary: 45000 },
-  { id: '2', name: 'Jane Smith', position: 'HR Assistant', status: 'Active', salary: 18000 },
-  { id: '3', name: 'Somchai Jaidee', position: 'Office Clerk', status: 'On Leave', salary: 15000 },
-  { id: '4', name: 'Emily Brown', position: 'Receptionist', status: 'Active', salary: 21000 },
-  { id: '5', name: 'Michael Lee', position: 'Senior Developer', status: 'Active', salary: 52000 },
-  { id: '6', name: 'Sarah Wilson', position: 'Project Manager', status: 'Active', salary: 48000 },
-  { id: '7', name: 'David Kim', position: 'Engineering Director', status: 'Active', salary: 95000 },
-  { id: '8', name: 'Anna Chen', position: 'Chief Technology Officer', status: 'On Leave', salary: 120000 },
-  { id: '9', name: 'Peter Parker', position: 'Data Analyst', status: 'Active', salary: 40000 },
-  { id: '10', name: 'Lisa Wong', position: 'Support Staff', status: 'Active', salary: 20000 },
-];
+// Storage repository (MySQL or in-memory fallback); assigned in start().
+let repo;
 
-// Next id counter; ids are unique strings and are never reused after a delete.
-let nextId = employees.length + 1;
-const generateId = () => String(nextId++);
+// Column limits from the MySQL table: VARCHAR(100), DECIMAL(12,2).
+const MAX_TEXT_LENGTH = 100;
+const MAX_SALARY = 9999999999.99;
 
 const VALID_CREDENTIALS = { username: 'admin', password: 'password123' };
 const MOCK_TOKEN = 'mock-jwt-token';
@@ -52,8 +47,6 @@ const parseSalary = (value) => {
   }
   return null;
 };
-
-const findEmployeeIndex = (id) => employees.findIndex((e) => e.id === id);
 
 /**
  * 1D K-Means clustering implemented from scratch.
@@ -143,16 +136,20 @@ app.post('/api/login', (req, res) => {
   return res.status(401).json({ success: false, message: 'Invalid username or password' });
 });
 
+// Storage mode check (handy to confirm MySQL vs in-memory)
+app.get('/api/health', (req, res) => {
+  res.status(200).json({ success: true, storage: repo.mode });
+});
+
 // 2. Get all employees
-app.get('/api/employees', (req, res) => {
+app.get('/api/employees', async (req, res) => {
+  const employees = await repo.getAll();
   res.status(200).json(employees);
 });
 
 // 6. Salary clusters — registered BEFORE any /api/employees/:id routes.
-app.get('/api/employees/salary-clusters', (req, res) => {
-  const salaries = employees
-    .map((e) => Number(e.salary))
-    .filter((s) => Number.isFinite(s));
+app.get('/api/employees/salary-clusters', async (req, res) => {
+  const salaries = (await repo.getSalaries()).filter((s) => Number.isFinite(s));
 
   if (salaries.length === 0) {
     return res.status(200).json({ success: true, clusters: [] });
@@ -163,7 +160,7 @@ app.get('/api/employees/salary-clusters', (req, res) => {
 });
 
 // 3. Add employee
-app.post('/api/employees', (req, res) => {
+app.post('/api/employees', async (req, res) => {
   const { name, position, salary } = req.body || {};
 
   const missing = [];
@@ -186,36 +183,45 @@ app.post('/api/employees', (req, res) => {
       message: 'Salary must be a valid positive number',
     });
   }
+  if (parsedSalary > MAX_SALARY) {
+    return res.status(400).json({
+      success: false,
+      message: `Salary must not exceed ${MAX_SALARY}`,
+    });
+  }
 
-  const newEmployee = {
-    id: generateId(),
-    name: name.trim(),
-    position: position.trim(),
-    status: 'Active',
+  const trimmedName = name.trim();
+  const trimmedPosition = position.trim();
+  if (trimmedName.length > MAX_TEXT_LENGTH || trimmedPosition.length > MAX_TEXT_LENGTH) {
+    return res.status(400).json({
+      success: false,
+      message: `Name and position must be at most ${MAX_TEXT_LENGTH} characters`,
+    });
+  }
+
+  const newEmployee = await repo.create({
+    name: trimmedName,
+    position: trimmedPosition,
     salary: parsedSalary,
-  };
-  employees.push(newEmployee);
+  });
   return res.status(201).json(newEmployee);
 });
 
 // 4. Toggle status
-app.put('/api/employees/:id/status', (req, res) => {
-  const index = findEmployeeIndex(req.params.id);
-  if (index === -1) {
+app.put('/api/employees/:id/status', async (req, res) => {
+  const employee = await repo.toggleStatus(req.params.id);
+  if (!employee) {
     return res.status(404).json({ success: false, message: `Employee with id ${req.params.id} not found` });
   }
-  const employee = employees[index];
-  employee.status = employee.status === 'Active' ? 'On Leave' : 'Active';
   return res.status(200).json(employee);
 });
 
 // 5. Delete employee
-app.delete('/api/employees/:id', (req, res) => {
-  const index = findEmployeeIndex(req.params.id);
-  if (index === -1) {
+app.delete('/api/employees/:id', async (req, res) => {
+  const deleted = await repo.remove(req.params.id);
+  if (!deleted) {
     return res.status(404).json({ success: false, message: `Employee with id ${req.params.id} not found` });
   }
-  employees.splice(index, 1);
   return res.status(200).json({ success: true });
 });
 
@@ -236,6 +242,14 @@ app.use((err, req, res, next) => {
   return res.status(500).json({ success: false, message: 'Internal server error' });
 });
 
-app.listen(PORT, HOST, () => {
-  console.log(`HR Manager API running at http://${HOST}:${PORT}`);
+async function start() {
+  repo = await initRepository();
+  app.listen(PORT, HOST, () => {
+    console.log(`HR Manager API running at http://${HOST}:${PORT} (storage: ${repo.mode})`);
+  });
+}
+
+start().catch((err) => {
+  console.error('Failed to start server:', err);
+  process.exit(1);
 });
