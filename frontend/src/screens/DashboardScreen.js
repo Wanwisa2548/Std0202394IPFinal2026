@@ -24,7 +24,7 @@ import {
 import { useAuth } from '../AuthContext';
 import { confirmDelete, formatMoney, parseSalary, showAlert } from '../utils';
 import { colors, gradients, shadow, tierStyles } from '../theme';
-import { Avatar, FadeInView, GradientButton } from '../components';
+import { Avatar, Button3D, FadeInView, GradientButton, StatusBadge } from '../components';
 import Mascot from '../Mascot';
 
 const FILTERS = ['All', 'Active', 'On Leave'];
@@ -203,12 +203,7 @@ export default function DashboardScreen({ navigation }) {
               <Text style={styles.empPosition} numberOfLines={1}>{item.position}</Text>
             </View>
           </View>
-          <View style={[styles.badge, { backgroundColor: isActive ? colors.successBg : colors.warningBg }]}>
-            <View style={[styles.badgeDot, { backgroundColor: isActive ? colors.success : colors.warning }]} />
-            <Text style={[styles.badgeText, { color: isActive ? colors.success : colors.warning }]}>
-              {item.status}
-            </Text>
-          </View>
+          <StatusBadge status={item.status} />
         </View>
 
         <View style={styles.salaryRow}>
@@ -218,38 +213,24 @@ export default function DashboardScreen({ navigation }) {
         </View>
 
         <View style={styles.actions}>
-          <Pressable
-            style={({ pressed }) => [
-              styles.actionButton,
-              styles.toggleButton,
-              pressed && styles.pressed,
-              !!busyId && styles.disabled,
-            ]}
+          <Button3D
+            title="Toggle Status"
+            subtitle={isActive ? 'Set On Leave' : 'Set Active'}
+            icon="swap-horizontal"
+            variant="primary"
             onPress={() => handleToggle(item.id)}
             disabled={!!busyId}
-          >
-            {isBusy ? (
-              <ActivityIndicator size="small" color={colors.primary} />
-            ) : (
-              <>
-                <Ionicons name="swap-horizontal" size={16} color={colors.primary} />
-                <Text style={[styles.actionText, { color: colors.primary }]}>Toggle Status</Text>
-              </>
-            )}
-          </Pressable>
-          <Pressable
-            style={({ pressed }) => [
-              styles.actionButton,
-              styles.deleteButton,
-              pressed && styles.pressed,
-              !!busyId && styles.disabled,
-            ]}
+            loading={isBusy}
+            style={styles.actionGap}
+          />
+          <Button3D
+            title="Delete"
+            subtitle="Remove record"
+            icon="trash"
+            variant="danger"
             onPress={() => handleDelete(item.id)}
             disabled={!!busyId}
-          >
-            <Ionicons name="trash-outline" size={16} color={colors.danger} />
-            <Text style={[styles.actionText, { color: colors.danger }]}>Delete</Text>
-          </Pressable>
+          />
         </View>
       </View>
     );
@@ -648,9 +629,6 @@ const styles = StyleSheet.create({
   empInfo: { flex: 1, marginLeft: 12, marginRight: 8 },
   empName: { fontSize: 16, fontWeight: '700', color: colors.text },
   empPosition: { fontSize: 13, color: colors.muted, marginLeft: 4, flexShrink: 1 },
-  badge: { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 10, paddingVertical: 5, borderRadius: 999 },
-  badgeDot: { width: 7, height: 7, borderRadius: 4, marginRight: 6 },
-  badgeText: { fontSize: 12, fontWeight: '700' },
   salaryRow: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -662,17 +640,6 @@ const styles = StyleSheet.create({
   },
   salaryLabel: { color: colors.muted, fontSize: 13, marginLeft: 8 },
   salaryValue: { marginLeft: 'auto', fontSize: 17, fontWeight: '700', color: colors.primary },
-  actions: { flexDirection: 'row', marginTop: 12 },
-  actionButton: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: 10,
-    borderRadius: 12,
-    minHeight: 42,
-  },
-  toggleButton: { backgroundColor: colors.primaryLight, marginRight: 8 },
-  deleteButton: { backgroundColor: colors.dangerBg },
-  actionText: { fontSize: 14, fontWeight: '700', marginLeft: 6 },
+  actions: { flexDirection: 'row', alignItems: 'flex-end', marginTop: 14 },
+  actionGap: { marginRight: 10 },
 });
