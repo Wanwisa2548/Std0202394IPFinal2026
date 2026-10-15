@@ -28,7 +28,9 @@ To run the backend locally instead, see section 2 and change `API_BASE_URL` in `
 
 Every column name has the prefix `WanSee_`. The prefix is defined once as `P` in `backend/repository.js`. The API still returns unprefixed keys (`id`, `name`, `position`, `status`, `salary`).
 
-Run this in phpMyAdmin (SQL tab) on your database:
+**Option A, import the dump:** in phpMyAdmin, select your database, open **Import**, and choose [`backend/database/employees.sql`](backend/database/employees.sql). It is an export of the live table, with its structure and 8 employees. Import it into a database that has no `employees` table yet.
+
+**Option B, run SQL by hand:** run this in phpMyAdmin (SQL tab) on your database:
 
 ```sql
 DROP TABLE IF EXISTS employees;
