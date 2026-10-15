@@ -10,29 +10,25 @@ import { confirmLogout } from '../utils';
 import { colors, gradients, shadow } from '../theme';
 import CuteIcon from '../CuteIcons';
 import Mascot from '../Mascot';
-import { Button3D, GradientButton } from '../components';
+import { Button3D } from '../components';
 
 export default function ProfileScreen({ navigation }) {
   const { token, setToken } = useAuth();
   const insets = useSafeAreaInsets();
   const [health, setHealth] = useState(null); // { ok, storage, message }
-  const [checking, setChecking] = useState(false);
 
   const checkServer = useCallback(async () => {
-    setChecking(true);
     try {
       const data = await getHealth();
       setHealth({ ok: true, storage: data && data.storage });
     } catch (err) {
       setHealth({ ok: false, message: err.message });
-    } finally {
-      setChecking(false);
     }
   }, []);
 
   useFocusEffect(
     useCallback(() => {
-      checkServer();
+      checkServer(); // runs automatically every time the Profile tab is opened
     }, [checkServer])
   );
 
@@ -100,14 +96,6 @@ export default function ProfileScreen({ navigation }) {
           <InfoRow label="API URL" value={API_BASE_URL} />
           <InfoRow label="Storage" value={online ? storageLabel : '-'} />
           {health && !health.ok ? <Text style={styles.errorText}>{health.message}</Text> : null}
-
-          <GradientButton
-            title="Check connection"
-            icon="sparkle"
-            onPress={checkServer}
-            loading={checking}
-            style={styles.checkButton}
-          />
         </View>
 
         {/* Session / about */}
@@ -203,6 +191,5 @@ const styles = StyleSheet.create({
   infoLabel: { color: colors.muted, fontSize: 14, marginRight: 12 },
   infoValue: { color: colors.text, fontSize: 14, fontWeight: '600', flexShrink: 1, textAlign: 'right' },
   errorText: { color: colors.danger, fontSize: 12, marginTop: 4 },
-  checkButton: { marginTop: 12 },
   logoutRow: { flexDirection: 'row' },
 });
