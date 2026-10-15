@@ -63,7 +63,38 @@ npm install
 npm start
 ```
 
-The API listens on `http://0.0.0.0:3000`, so an emulator or phone on the same network can reach it.
+The API listens on `http://0.0.0.0:3000`, so an emulator or phone on the same network can reach it. Set `PORT` in `.env` to use a different port. Run locally without a reachable MySQL, it uses in-memory storage.
+
+## Deploy the backend to the university server (FileZilla + PuTTY)
+
+MySQL on 119.59.102.161 is only reachable from the server itself, so the backend has to run there to use the database.
+
+**1. Prepare `.env` locally.** Create `backend/.env` from `.env.example` with `PORT=3038` and `DB_HOST=localhost`. The `DB_*` values are the same as in your previous project's `.env`.
+
+**2. Upload with FileZilla** (SFTP, `119.59.102.161`, user `std6730202394`):
+- On the remote side, go to `/app` and create a **new** folder, `hr-backend`. Do **not** upload into `/app/backend`, which holds another project.
+- Upload `server.js`, `repository.js`, `package.json`, `package-lock.json` and `.env` into `/app/hr-backend`.
+- Don't upload `node_modules`. Install it on the server in the next step.
+
+**3. Run with PuTTY** (SSH to the same host):
+
+```bash
+cd /app/hr-backend
+node -v                      # Express 5 needs Node 18 or newer
+npm install --omit=dev
+
+pm2 list                     # if another app already uses port 3038, stop it first:
+pm2 stop <name-or-id>
+
+pm2 start server.js --name hr-backend
+pm2 logs hr-backend --lines 20   # should say "using MYSQL storage" and "(storage: mysql)"
+curl http://localhost:3038/api/health   # {"success":true,"storage":"mysql"}
+pm2 save
+```
+
+Restart after uploading new files: `pm2 restart hr-backend`. Without pm2 you can use `npm start`, but it stops when PuTTY closes.
+
+**4. Frontend:** `API_BASE_URL` in `frontend/src/config.js` is already `http://119.59.102.161:3038`.
 
 ## 3. Start the frontend
 
@@ -71,6 +102,7 @@ First set the API URL in `frontend/src/config.js`:
 
 | Where the app runs | `API_BASE_URL` |
 |---|---|
+| Backend on the university server (default) | `http://119.59.102.161:3038` |
 | Android emulator | `http://10.0.2.2:3000` |
 | iOS simulator / web | `http://localhost:3000` |
 | Physical phone (Expo Go) | `http://<computer LAN IP>:3000` |

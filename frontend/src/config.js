@@ -8,8 +8,10 @@
  *       (phone and computer must be on the same Wi-Fi; find the IP with
  *        `ipconfig` on Windows or `ifconfig` / `ipconfig getifaddr en0` on macOS,
  *        and allow port 3000 through the firewall)
+ *   University server (backend deployed with FileZilla + PuTTY, uses MySQL)
+ *                             -> http://119.59.102.161:3038   (works from any device)
  */
-export const API_BASE_URL = 'http://localhost:3000';
+export const API_BASE_URL = 'http://119.59.102.161:3038';
 
 // Requests that take longer than this are treated as a network error.
 export const REQUEST_TIMEOUT_MS = 10000;

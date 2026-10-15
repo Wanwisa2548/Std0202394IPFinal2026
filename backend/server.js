@@ -1,16 +1,13 @@
-// Load backend/.env if present (Node >= 20.12 built-in; no dotenv needed).
-try {
-  process.loadEnvFile();
-} catch {
-  // no .env file -> rely on real environment variables (or in-memory fallback)
-}
+// Load backend/.env if present (DB_* settings, PORT). Missing file is fine.
+require('dotenv').config({ path: require('path').join(__dirname, '.env') });
 
 const express = require('express');
 const cors = require('cors');
 const { initRepository } = require('./repository');
 
 const app = express();
-const PORT = 3000;
+// 3000 by default; set PORT=3038 in .env on the university server.
+const PORT = Number(process.env.PORT) || 3000;
 const HOST = '0.0.0.0';
 
 app.use(cors());
