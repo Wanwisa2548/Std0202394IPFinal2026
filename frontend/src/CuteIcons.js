@@ -284,6 +284,36 @@ const ICONS = {
     </G>
   ),
 
+  home: () => (
+    <G>
+      <Rect x="13" y="30" width="38" height="29" rx="5" fill="#E2E8F0" />
+      <Rect x="13" y="28" width="38" height="28" rx="5" fill="#FFFFFF" />
+      <Path d="M7 32 L32 9 L57 32" stroke="#C2410C" strokeWidth="8" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+      <Path d="M7 30 L32 7 L57 30" stroke="#F97316" strokeWidth="7" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+      <Rect x="26" y="38" width="12" height="18" rx="3" fill="#3B82F6" />
+      <Circle cx="35" cy="47" r="1.3" fill="#FDE68A" />
+      <Rect x="40" y="35" width="7" height="7" rx="1.5" fill="#93C5FD" />
+      <Rect x="17" y="35" width="7" height="7" rx="1.5" fill="#93C5FD" />
+      <Rect x="44" y="12" width="6" height="11" rx="1.5" fill="#94A3B8" />
+    </G>
+  ),
+
+  server: () => (
+    <G>
+      <Rect x="10" y="10" width="44" height="18" rx="6" fill="#1E40AF" />
+      <Rect x="10" y="8" width="44" height="18" rx="6" fill="#3B82F6" />
+      <Rect x="10" y="34" width="44" height="18" rx="6" fill="#1E40AF" />
+      <Rect x="10" y="32" width="44" height="18" rx="6" fill="#3B82F6" />
+      <Circle cx="44" cy="17" r="3" fill="#4ADE80" />
+      <Circle cx="44" cy="41" r="3" fill="#4ADE80" />
+      <Rect x="16" y="15.5" width="16" height="3" rx="1.5" fill="#BFDBFE" />
+      <Rect x="16" y="39.5" width="16" height="3" rx="1.5" fill="#BFDBFE" />
+      <Rect x="14" y="10" width="14" height="2.4" rx="1.2" {...GLOSS} />
+      <Rect x="29" y="52" width="6" height="6" fill="#64748B" />
+      <Rect x="18" y="57" width="28" height="4" rx="2" fill="#94A3B8" />
+    </G>
+  ),
+
   door: () => (
     <G>
       <Rect x="12" y="7" width="32" height="52" rx="5" fill="#B45309" />

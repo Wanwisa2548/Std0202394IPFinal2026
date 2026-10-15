@@ -23,6 +23,17 @@ export function confirmDelete(onConfirm) {
   ]);
 }
 
+export function confirmLogout(onConfirm) {
+  if (Platform.OS === 'web') {
+    if (window.confirm('Log Out\n\nDo you want to log out?')) onConfirm();
+    return;
+  }
+  Alert.alert('Log Out', 'Do you want to log out?', [
+    { text: 'Cancel', style: 'cancel' },
+    { text: 'Log Out', style: 'destructive', onPress: onConfirm },
+  ]);
+}
+
 /** Formats a number with thousands separators, e.g. 45000 -> "45,000", 1234.5 -> "1,234.50". */
 export function formatMoney(value) {
   const n = Number(value);

@@ -41,7 +41,7 @@ export default function LoginScreen({ navigation }) {
       }
       setToken(data.token);
       // replace() so the Back button does not return to Login
-      navigation.replace('Dashboard');
+      navigation.replace('Main');
     } catch (err) {
       showAlert('Login Failed', err.message);
     } finally {

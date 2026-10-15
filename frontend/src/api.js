@@ -60,3 +60,5 @@ export const deleteEmployee = (token, id) =>
   request(`/api/employees/${encodeURIComponent(id)}`, { method: 'DELETE', token });
 
 export const getSalaryClusters = (token) => request('/api/employees/salary-clusters', { token });
+
+export const getHealth = () => request('/api/health');

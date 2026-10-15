@@ -22,11 +22,12 @@ import {
   toggleEmployeeStatus,
 } from '../api';
 import { useAuth } from '../AuthContext';
-import { confirmDelete, formatMoney, parseSalary, showAlert } from '../utils';
-import { colors, gradients, shadow, tierStyles } from '../theme';
-import { Avatar, Button3D, FadeInView, GradientButton, StatusBadge } from '../components';
+import { confirmDelete, confirmLogout, formatMoney, parseSalary, showAlert } from '../utils';
+import { colors, gradients, shadow } from '../theme';
+import { Avatar, Button3D, GradientButton, StatusBadge } from '../components';
 import Mascot from '../Mascot';
 import CuteIcon from '../CuteIcons';
+import TierCard from '../TierCard';
 
 const FILTERS = ['All', 'Active', 'On Leave'];
 
@@ -95,8 +96,10 @@ export default function DashboardScreen({ navigation }) {
   }, [employees, search, statusFilter]);
 
   const handleLogout = () => {
-    setToken(null);
-    navigation.replace('Login');
+    confirmLogout(() => {
+      setToken(null);
+      navigation.replace('Login');
+    });
   };
 
   const handleRefresh = async () => {
@@ -325,40 +328,15 @@ export default function DashboardScreen({ navigation }) {
 
           {!analyzing && clusters !== null && clusters.length > 0 && (
             <View style={styles.tierList}>
-              {clusters.map((c, i) => {
-                const look = tierStyles[Math.min(i, tierStyles.length - 1)];
-                const pct = totalClustered ? Math.round((c.count / totalClustered) * 100) : 0;
-                return (
-                  <FadeInView key={`${analysisRun}-${c.group}`} delay={i * 140}>
-                    <LinearGradient
-                      colors={look.colors}
-                      start={{ x: 0, y: 0 }}
-                      end={{ x: 1, y: 1 }}
-                      style={[styles.tierCard, shadow.card]}
-                    >
-                      <View style={styles.tierHead}>
-                        <View style={styles.tierIcon}>
-                          <CuteIcon name={look.icon} size={34} />
-                        </View>
-                        <View style={styles.flexShrink}>
-                          <Text style={styles.tierName}>{c.group}</Text>
-                          <Text style={styles.tierLabel}>{look.label}</Text>
-                        </View>
-                        <View style={styles.tierCount}>
-                          <Text style={styles.tierCountValue}>{c.count}</Text>
-                          <Text style={styles.tierCountLabel}>{c.count === 1 ? 'employee' : 'employees'}</Text>
-                        </View>
-                      </View>
-                      <Text style={styles.tierAvgLabel}>Average salary</Text>
-                      <Text style={styles.tierAvg}>฿ {formatMoney(c.centroid)}</Text>
-                      <View style={styles.barTrack}>
-                        <View style={[styles.barFill, { width: `${pct}%` }]} />
-                      </View>
-                      <Text style={styles.barText}>{pct}% of all employees</Text>
-                    </LinearGradient>
-                  </FadeInView>
-                );
-              })}
+              {clusters.map((c, i) => (
+                <TierCard
+                  key={`${analysisRun}-${c.group}`}
+                  cluster={c}
+                  index={i}
+                  total={totalClustered}
+                  delay={i * 140}
+                />
+              ))}
             </View>
           )}
         </View>
@@ -583,34 +561,6 @@ const styles = StyleSheet.create({
 
   // Tier cards
   tierList: { marginTop: 14 },
-  tierCard: { borderRadius: 18, padding: 16, marginBottom: 12 },
-  tierHead: { flexDirection: 'row', alignItems: 'center' },
-  tierIcon: {
-    width: 50,
-    height: 50,
-    borderRadius: 15,
-    backgroundColor: '#FFFFFF',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 12,
-    boxShadow: '0px 4px 10px rgba(0,0,0,0.20)',
-  },
-  tierName: { color: '#fff', fontSize: 18, fontWeight: '700' },
-  tierLabel: { color: 'rgba(255,255,255,0.85)', fontSize: 12 },
-  tierCount: { marginLeft: 'auto', alignItems: 'flex-end' },
-  tierCountValue: { color: '#fff', fontSize: 24, fontWeight: '700' },
-  tierCountLabel: { color: 'rgba(255,255,255,0.85)', fontSize: 11 },
-  tierAvgLabel: { color: 'rgba(255,255,255,0.85)', fontSize: 12, marginTop: 14 },
-  tierAvg: { color: '#fff', fontSize: 26, fontWeight: '700' },
-  barTrack: {
-    height: 8,
-    borderRadius: 4,
-    backgroundColor: 'rgba(255,255,255,0.3)',
-    marginTop: 12,
-    overflow: 'hidden',
-  },
-  barFill: { height: '100%', borderRadius: 4, backgroundColor: '#fff' },
-  barText: { color: 'rgba(255,255,255,0.9)', fontSize: 12, marginTop: 6 },
 
   // List header
   listHeader: { flexDirection: 'row', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: 10 },

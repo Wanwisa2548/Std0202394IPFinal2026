@@ -4,7 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { AuthProvider } from './src/AuthContext';
 import LoginScreen from './src/screens/LoginScreen';
-import DashboardScreen from './src/screens/DashboardScreen';
+import MainTabs from './src/MainTabs';
 
 const Stack = createNativeStackNavigator();
 
@@ -15,11 +15,8 @@ export default function App() {
         <NavigationContainer>
           <Stack.Navigator initialRouteName="Login" screenOptions={{ headerShown: false }}>
             <Stack.Screen name="Login" component={LoginScreen} />
-            <Stack.Screen
-              name="Dashboard"
-              component={DashboardScreen}
-              options={{ title: 'HR Dashboard', gestureEnabled: false }}
-            />
+            {/* Bottom tabs: Dashboard (CRUD + K-Means), Analytics, Profile */}
+            <Stack.Screen name="Main" component={MainTabs} options={{ gestureEnabled: false }} />
           </Stack.Navigator>
         </NavigationContainer>
         <StatusBar style="light" />
