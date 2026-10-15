@@ -5,6 +5,20 @@ Full-stack exam project:
 - **backend/**: Express.js REST API. Data is stored in MySQL, or in an in-memory array if MySQL is not configured or not reachable. Salary tiers come from a hand-written 1D K-Means (k = 3).
 - **frontend/**: React Native (Expo, JavaScript) app with a Login screen and a Dashboard screen.
 
+## Quick start for the examiner
+
+The backend is deployed on the course server at **http://119.59.102.161:3038**, using the MySQL database `ip_std6730202394`. The frontend uses this URL by default, so only the frontend needs to be started:
+
+```bash
+cd frontend
+npm install
+npx expo start
+```
+
+Log in with `admin` / `password123`. To check the backend: http://119.59.102.161:3038/api/health should return `{"success":true,"storage":"mysql"}`.
+
+To run the backend locally instead, see section 2 and change `API_BASE_URL` in `frontend/src/config.js`.
+
 ## Requirements
 
 - Node.js 18+ (tested with Node 24) and npm
