@@ -145,12 +145,15 @@ Then press `a` (Android), `i` (iOS) or `w` (web), or scan the QR code with Expo 
 | DELETE | `/api/employees/:id` | Delete an employee (`404` if not found) |
 | GET | `/api/employees/salary-clusters` | K-Means salary tiers: `{ success, clusters: [{ group, centroid, count }] }` |
 
+**Authentication:** every `/api/employees...` endpoint requires the token from `/api/login` in the header `Authorization: Bearer mock-jwt-token`. Requests without it, or with a wrong token, get `401 { success: false, message }`. `/api/login` and `/api/health` are public. The app sends the token automatically after login.
+
 ### Quick curl test
 
 ```bash
 curl -X POST http://localhost:3000/api/login -H "Content-Type: application/json" -d '{"username":"admin","password":"password123"}'
-curl http://localhost:3000/api/employees
-curl http://localhost:3000/api/employees/salary-clusters
+curl http://localhost:3000/api/employees                                                  # 401 (no token)
+curl http://localhost:3000/api/employees -H "Authorization: Bearer mock-jwt-token"        # 200
+curl http://localhost:3000/api/employees/salary-clusters -H "Authorization: Bearer mock-jwt-token"
 ```
 
 ## K-Means notes

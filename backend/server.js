@@ -138,6 +138,17 @@ app.get('/api/health', (req, res) => {
   res.status(200).json({ success: true, storage: repo.mode });
 });
 
+// Auth guard: every /api/employees route requires "Authorization: Bearer <token from /api/login>".
+const requireAuth = (req, res, next) => {
+  const header = req.get('Authorization') || '';
+  const [scheme, token] = header.split(' ');
+  if (scheme !== 'Bearer' || token !== MOCK_TOKEN) {
+    return res.status(401).json({ success: false, message: 'Unauthorized: please log in first' });
+  }
+  return next();
+};
+app.use('/api/employees', requireAuth);
+
 // 2. Get all employees
 app.get('/api/employees', async (req, res) => {
   const employees = await repo.getAll();
