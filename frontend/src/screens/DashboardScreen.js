@@ -462,7 +462,6 @@ const styles = StyleSheet.create({
   listContent: { paddingBottom: 40 },
   body: { paddingHorizontal: 16 },
   pressed: { transform: [{ scale: 0.97 }], opacity: 0.9 },
-  disabled: { opacity: 0.5 },
   inlineRow: { flexDirection: 'row', alignItems: 'center', marginTop: 3 },
 
   // Hero

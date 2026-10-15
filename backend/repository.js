@@ -189,4 +189,4 @@ async function initRepository(env = process.env) {
   }
 }
 
-module.exports = { initRepository, createMemoryRepository, createMySqlRepository, P, TABLE, COL };
+module.exports = { initRepository };

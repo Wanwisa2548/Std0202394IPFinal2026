@@ -11,7 +11,6 @@ export const colors = {
   success: '#059669',
   successBg: '#D1FAE5',
   warning: '#B45309',
-  warningBg: '#FEF3C7',
   danger: '#DC2626',
   dangerBg: '#FDECEC',
 };
@@ -20,7 +19,6 @@ export const gradients = {
   hero: ['#1E3A8A', '#1D4ED8', '#2563EB'],
   primary: ['#2563EB', '#1D4ED8'],
   analyze: ['#1E40AF', '#2563EB'],
-  danger: ['#EF4444', '#DC2626'],
 };
 
 // One look per salary tier (low -> high), light blue to navy.
