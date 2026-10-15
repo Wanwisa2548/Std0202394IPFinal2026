@@ -17,6 +17,7 @@ import { showAlert } from '../utils';
 import { colors, gradients, shadow } from '../theme';
 import { FadeInView, GradientButton } from '../components';
 import Mascot from '../Mascot';
+import CuteIcon from '../CuteIcons';
 
 export default function LoginScreen({ navigation }) {
   const { setToken } = useAuth();
@@ -73,7 +74,7 @@ export default function LoginScreen({ navigation }) {
 
               <Text style={styles.label}>Username</Text>
               <View style={[styles.inputRow, focused === 'user' && styles.inputFocused]}>
-                <Ionicons name="person-outline" size={20} color={colors.muted} />
+                <CuteIcon name="user" size={24} />
                 <TextInput
                   style={styles.input}
                   value={username}
@@ -91,7 +92,7 @@ export default function LoginScreen({ navigation }) {
 
               <Text style={styles.label}>Password</Text>
               <View style={[styles.inputRow, focused === 'pass' && styles.inputFocused]}>
-                <Ionicons name="lock-closed-outline" size={20} color={colors.muted} />
+                <CuteIcon name="lock" size={24} />
                 <TextInput
                   style={styles.input}
                   value={password}
@@ -114,7 +115,7 @@ export default function LoginScreen({ navigation }) {
 
               <GradientButton
                 title="Log In"
-                icon="log-in-outline"
+                icon="key"
                 onPress={handleLogin}
                 loading={loading}
                 style={styles.loginButton}

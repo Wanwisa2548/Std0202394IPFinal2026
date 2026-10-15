@@ -25,9 +25,9 @@ export const gradients = {
 
 // One look per salary tier (low -> high), light blue to navy.
 export const tierStyles = [
-  { colors: ['#60A5FA', '#3B82F6'], icon: 'person', label: 'Entry level' },
-  { colors: ['#2563EB', '#1D4ED8'], icon: 'people', label: 'Mid level' },
-  { colors: ['#1E40AF', '#172554'], icon: 'ribbon', label: 'Senior level' },
+  { colors: ['#60A5FA', '#3B82F6'], icon: 'sprout', label: 'Entry level' },
+  { colors: ['#2563EB', '#1D4ED8'], icon: 'rocket', label: 'Mid level' },
+  { colors: ['#1E40AF', '#172554'], icon: 'crown', label: 'Senior level' },
 ];
 
 export const avatarPalette = [

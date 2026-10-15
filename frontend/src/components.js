@@ -1,8 +1,8 @@
 import { useEffect, useRef } from 'react';
 import { ActivityIndicator, Animated, Pressable, StyleSheet, Text, View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Ionicons } from '@expo/vector-icons';
 import { avatarPalette, gradients } from './theme';
+import CuteIcon from './CuteIcons';
 
 /** Gradient button with press feedback, loading spinner and disabled state. */
 export function GradientButton({ title, onPress, disabled, loading, icon, colors = gradients.primary, style }) {
@@ -23,7 +23,11 @@ export function GradientButton({ title, onPress, disabled, loading, icon, colors
           <ActivityIndicator color="#fff" />
         ) : (
           <View style={styles.buttonContent}>
-            {icon && <Ionicons name={icon} size={18} color="#fff" style={styles.buttonIcon} />}
+            {icon && (
+              <View style={styles.buttonIcon}>
+                <CuteIcon name={icon} size={18} />
+              </View>
+            )}
             <Text style={styles.buttonText}>{title}</Text>
           </View>
         )}
@@ -108,7 +112,9 @@ export function StatusBadge({ status }) {
           <View style={styles.dot} />
         </View>
       ) : (
-        <Ionicons name="airplane" size={12} color={look.text} style={styles.badgeIcon} />
+        <View style={styles.badgeIcon}>
+          <CuteIcon name="beach" size={15} />
+        </View>
       )}
       <Text style={[styles.badgeText, { color: look.text }]}>{status}</Text>
     </LinearGradient>
@@ -146,7 +152,7 @@ export function Button3D({ title, subtitle, icon, variant = 'primary', onPress, 
         ) : (
           <>
             <View style={styles.b3dIcon}>
-              <Ionicons name={icon} size={16} color="#fff" />
+              <CuteIcon name={icon} size={20} />
             </View>
             <View style={styles.b3dTextWrap}>
               <Text style={styles.b3dTitle} numberOfLines={1}>{title}</Text>
@@ -181,10 +187,11 @@ const styles = StyleSheet.create({
     width: 30,
     height: 30,
     borderRadius: 15,
-    backgroundColor: 'rgba(255,255,255,0.22)',
+    backgroundColor: '#FFFFFF',
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 8,
+    boxShadow: '0px 2px 5px rgba(0,0,0,0.18)',
   },
   b3dTextWrap: { flexShrink: 1 },
   b3dTitle: { color: '#fff', fontSize: 14, fontWeight: '700' },
@@ -193,7 +200,16 @@ const styles = StyleSheet.create({
   buttonWrap: { borderRadius: 10, overflow: 'hidden' },
   button: { paddingVertical: 14, alignItems: 'center', justifyContent: 'center', minHeight: 48 },
   buttonContent: { flexDirection: 'row', alignItems: 'center' },
-  buttonIcon: { marginRight: 8 },
+  buttonIcon: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    backgroundColor: '#FFFFFF',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 10,
+    boxShadow: '0px 2px 5px rgba(0,0,0,0.18)',
+  },
   buttonText: { color: '#fff', fontSize: 16, fontWeight: '700', letterSpacing: 0.3 },
   pressed: { transform: [{ scale: 0.97 }], opacity: 0.92 },
   disabled: { opacity: 0.55 },

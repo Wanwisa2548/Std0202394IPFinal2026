@@ -26,6 +26,7 @@ import { confirmDelete, formatMoney, parseSalary, showAlert } from '../utils';
 import { colors, gradients, shadow, tierStyles } from '../theme';
 import { Avatar, Button3D, FadeInView, GradientButton, StatusBadge } from '../components';
 import Mascot from '../Mascot';
+import CuteIcon from '../CuteIcons';
 
 const FILTERS = ['All', 'Active', 'On Leave'];
 
@@ -199,7 +200,7 @@ export default function DashboardScreen({ navigation }) {
           <View style={styles.empInfo}>
             <Text style={styles.empName} numberOfLines={1}>{item.name}</Text>
             <View style={styles.inlineRow}>
-              <Ionicons name="briefcase-outline" size={13} color={colors.muted} />
+              <CuteIcon name="briefcase" size={15} />
               <Text style={styles.empPosition} numberOfLines={1}>{item.position}</Text>
             </View>
           </View>
@@ -207,7 +208,7 @@ export default function DashboardScreen({ navigation }) {
         </View>
 
         <View style={styles.salaryRow}>
-          <Ionicons name="cash-outline" size={18} color={colors.primary} />
+          <CuteIcon name="coin" size={24} />
           <Text style={styles.salaryLabel}>Salary</Text>
           <Text style={styles.salaryValue}>฿ {formatMoney(item.salary)}</Text>
         </View>
@@ -216,7 +217,7 @@ export default function DashboardScreen({ navigation }) {
           <Button3D
             title="Toggle Status"
             subtitle={isActive ? 'Set On Leave' : 'Set Active'}
-            icon="swap-horizontal"
+            icon="swap"
             variant="primary"
             onPress={() => handleToggle(item.id)}
             disabled={!!busyId}
@@ -264,48 +265,50 @@ export default function DashboardScreen({ navigation }) {
             style={({ pressed }) => [styles.logoutButton, pressed && styles.pressed]}
             hitSlop={8}
           >
-            <Ionicons name="log-out-outline" size={18} color="#fff" />
+            <View style={styles.logoutIcon}>
+              <CuteIcon name="door" size={16} />
+            </View>
             <Text style={styles.logoutText}>Logout</Text>
           </Pressable>
         </View>
 
         <View style={styles.statsGrid}>
           <StatTile icon="people" label="Employees" value={stats.total} />
-          <StatTile icon="checkmark-circle" label="Active" value={stats.active} />
-          <StatTile icon="airplane" label="On Leave" value={stats.onLeave} />
-          <StatTile icon="wallet" label="Avg. Salary" value={formatMoney(stats.average)} />
+          <StatTile icon="check" label="Active" value={stats.active} />
+          <StatTile icon="beach" label="On Leave" value={stats.onLeave} />
+          <StatTile icon="moneyBag" label="Avg. Salary" value={formatMoney(stats.average)} />
         </View>
       </LinearGradient>
 
       <View style={styles.body}>
         {/* Add Employee form */}
         <View style={[styles.section, shadow.card]}>
-          <SectionTitle icon="person-add" title="Add Employee" />
-          <IconInput icon="person-outline" placeholder="Name" value={name} onChangeText={setName} editable={!adding} />
+          <SectionTitle icon="addUser" tint={['#DCFCE7', '#BBF7D0']} title="Add Employee" />
+          <IconInput icon="user" placeholder="Name" value={name} onChangeText={setName} editable={!adding} />
           <IconInput
-            icon="briefcase-outline"
+            icon="briefcase"
             placeholder="Position"
             value={position}
             onChangeText={setPosition}
             editable={!adding}
           />
           <IconInput
-            icon="cash-outline"
+            icon="coin"
             placeholder="Salary"
             value={salary}
             onChangeText={setSalary}
             keyboardType="numeric"
             editable={!adding}
           />
-          <GradientButton title="Add Employee" icon="add-circle-outline" onPress={handleAdd} loading={adding} />
+          <GradientButton title="Add Employee" icon="plus" onPress={handleAdd} loading={adding} />
         </View>
 
         {/* Salary analysis */}
         <View style={[styles.section, shadow.card]}>
-          <SectionTitle icon="analytics" title="Salary Analytics" subtitle="K-Means clustering (k = 3)" />
+          <SectionTitle icon="chart" tint={['#EDE9FE', '#DDD6FE']} title="Salary Analytics" subtitle="K-Means clustering (k = 3)" />
           <GradientButton
             title={analyzing ? 'Analyzing...' : 'Analyze Salary Structure'}
-            icon="sparkles"
+            icon="sparkle"
             colors={gradients.analyze}
             onPress={handleAnalyze}
             disabled={analyzing}
@@ -315,7 +318,7 @@ export default function DashboardScreen({ navigation }) {
 
           {!analyzing && clusters !== null && clusters.length === 0 && (
             <View style={styles.emptyBox}>
-              <Ionicons name="file-tray-outline" size={32} color={colors.muted} />
+              <Mascot size={56} />
               <Text style={styles.emptyText}>No employee data</Text>
             </View>
           )}
@@ -335,7 +338,7 @@ export default function DashboardScreen({ navigation }) {
                     >
                       <View style={styles.tierHead}>
                         <View style={styles.tierIcon}>
-                          <Ionicons name={look.icon} size={20} color="#fff" />
+                          <CuteIcon name={look.icon} size={34} />
                         </View>
                         <View style={styles.flexShrink}>
                           <Text style={styles.tierName}>{c.group}</Text>
@@ -368,7 +371,7 @@ export default function DashboardScreen({ navigation }) {
           </Text>
         </View>
         <View style={[styles.searchRow, shadow.card]}>
-          <Ionicons name="search" size={18} color={colors.muted} />
+          <CuteIcon name="search" size={22} />
           <TextInput
             style={styles.searchInput}
             placeholder="Search name or position"
@@ -416,7 +419,7 @@ export default function DashboardScreen({ navigation }) {
             <ActivityIndicator style={styles.spinner} size="large" color={colors.primary} />
           ) : (
             <View style={styles.emptyBox}>
-              <Ionicons name="people-outline" size={36} color={colors.muted} />
+              <Mascot size={64} />
               <Text style={styles.emptyText}>
                 {employees.length === 0 ? 'No employees yet.' : 'No employees match your search.'}
               </Text>
@@ -434,7 +437,9 @@ export default function DashboardScreen({ navigation }) {
 function StatTile({ icon, label, value }) {
   return (
     <View style={styles.statTile}>
-      <Ionicons name={icon} size={18} color="#fff" />
+      <View style={styles.statIcon}>
+        <CuteIcon name={icon} size={26} />
+      </View>
       <Text style={styles.statValue} numberOfLines={1} adjustsFontSizeToFit>
         {value}
       </Text>
@@ -443,12 +448,12 @@ function StatTile({ icon, label, value }) {
   );
 }
 
-function SectionTitle({ icon, title, subtitle }) {
+function SectionTitle({ icon, tint, title, subtitle }) {
   return (
     <View style={styles.sectionHead}>
-      <View style={styles.sectionIcon}>
-        <Ionicons name={icon} size={18} color={colors.primary} />
-      </View>
+      <LinearGradient colors={tint} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={styles.sectionIcon}>
+        <CuteIcon name={icon} size={32} />
+      </LinearGradient>
       <View>
         <Text style={styles.sectionTitle}>{title}</Text>
         {subtitle ? <Text style={styles.sectionSub}>{subtitle}</Text> : null}
@@ -461,7 +466,7 @@ function IconInput({ icon, ...props }) {
   const [focused, setFocused] = useState(false);
   return (
     <View style={[styles.inputRow, focused && styles.inputFocused]}>
-      <Ionicons name={icon} size={18} color={focused ? colors.primary : colors.muted} />
+      <CuteIcon name={icon} size={22} />
       <TextInput
         style={styles.input}
         placeholderTextColor="#A8A5C7"
@@ -526,6 +531,23 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'rgba(255,255,255,0.22)',
   },
+  statIcon: {
+    width: 40,
+    height: 40,
+    borderRadius: 13,
+    backgroundColor: '#FFFFFF',
+    alignItems: 'center',
+    justifyContent: 'center',
+    boxShadow: '0px 3px 8px rgba(0,0,0,0.18)',
+  },
+  logoutIcon: {
+    width: 24,
+    height: 24,
+    borderRadius: 12,
+    backgroundColor: '#FFFFFF',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   statValue: { color: '#fff', fontSize: 22, fontWeight: '700', marginTop: 6 },
   statLabel: { color: 'rgba(255,255,255,0.85)', fontSize: 12, marginTop: 2 },
 
@@ -533,13 +555,13 @@ const styles = StyleSheet.create({
   section: { backgroundColor: colors.card, borderRadius: 20, padding: 16, marginBottom: 16 },
   sectionHead: { flexDirection: 'row', alignItems: 'center', marginBottom: 14 },
   sectionIcon: {
-    width: 34,
-    height: 34,
-    borderRadius: 10,
-    backgroundColor: colors.primaryLight,
+    width: 48,
+    height: 48,
+    borderRadius: 14,
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: 10,
+    marginRight: 12,
+    boxShadow: '0px 4px 10px rgba(15,30,61,0.12)',
   },
   sectionTitle: { fontSize: 18, fontWeight: '700', color: colors.text },
   sectionSub: { fontSize: 12, color: colors.muted, marginTop: 1 },
@@ -564,13 +586,14 @@ const styles = StyleSheet.create({
   tierCard: { borderRadius: 18, padding: 16, marginBottom: 12 },
   tierHead: { flexDirection: 'row', alignItems: 'center' },
   tierIcon: {
-    width: 38,
-    height: 38,
-    borderRadius: 12,
-    backgroundColor: 'rgba(255,255,255,0.25)',
+    width: 50,
+    height: 50,
+    borderRadius: 15,
+    backgroundColor: '#FFFFFF',
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: 10,
+    marginRight: 12,
+    boxShadow: '0px 4px 10px rgba(0,0,0,0.20)',
   },
   tierName: { color: '#fff', fontSize: 18, fontWeight: '700' },
   tierLabel: { color: 'rgba(255,255,255,0.85)', fontSize: 12 },
@@ -628,7 +651,7 @@ const styles = StyleSheet.create({
   empRow: { flexDirection: 'row', alignItems: 'center' },
   empInfo: { flex: 1, marginLeft: 12, marginRight: 8 },
   empName: { fontSize: 16, fontWeight: '700', color: colors.text },
-  empPosition: { fontSize: 13, color: colors.muted, marginLeft: 4, flexShrink: 1 },
+  empPosition: { fontSize: 13, color: colors.muted, marginLeft: 5, flexShrink: 1 },
   salaryRow: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -638,7 +661,7 @@ const styles = StyleSheet.create({
     paddingVertical: 9,
     marginTop: 12,
   },
-  salaryLabel: { color: colors.muted, fontSize: 13, marginLeft: 8 },
+  salaryLabel: { color: colors.muted, fontSize: 13, marginLeft: 10 },
   salaryValue: { marginLeft: 'auto', fontSize: 17, fontWeight: '700', color: colors.primary },
   actions: { flexDirection: 'row', alignItems: 'flex-end', marginTop: 14 },
   actionGap: { marginRight: 10 },
